@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Issue List</title>
+  <link rel="stylesheet" href="networkp_style.css" />
+ 
+  <style>
+    body {
+      background-color: #121212;
+      color: #fbfcff;
+      margin: 0;
+      padding: 0;
+    }
+
+    header, footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #192c1e;
+    }
+
+    h1 {
+      margin: 0.5rem 0;
+    }
+
+    nav a {
+      margin: 0 1rem;
+      color: #fbfcff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    nav a:hover {
+      text-decoration: underline;
+    }
+
+    .layer-group {
+      margin: 0.1rem auto;
+      max-width: 960px;
+      padding: 1rem;
+    }
+
+    .layer-title {
+      display: flex;
+      align-items: center;
+      background-color: #2d6843;
+      padding: 0.75rem 1rem;
+      font-size: 2.0rem;
+      font-weight: 600;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+
+    .issue-card {
+      background-color: #1e2d2f;
+      border: 1px solid #2d6843;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 0.8rem;
+      transition: transform 0.2s ease-in-out;
+      cursor: pointer;
+    }
+
+    .issue-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 10px #2d6843aa;
+    }
+
+    .issue-title {
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+
+    .issue-desc {
+      font-size: 1.0rem;
+      color: #d0ccd0;
+      margin-top: 0.3rem;
+    }
+
+    #rickRoll {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #000;
+      z-index: 9999;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+
+    #rickRoll img {
+      max-width: 80%;
+    }
+
+    #noteContainer .music-note {
+      position: absolute;
+      font-size: 2rem;
+      transition: transform 2s ease-out, opacity 2s ease-out;
+      color: #2D6843;
+    }
+
+    .custom-popup {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .popup-content {
+      background: #FBFCFF;
+      color: #2D6843;
+      padding: 30px 40px;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Go to Top Button */
+    #goTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 40px;
+      right: 40px;
+      z-index: 1100;
+      padding: 12px 18px;
+      font-size: 1.2rem;
+      background: #2d6843;
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      box-shadow: 0 2px 8px #0006;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Network Issue Index</h1>
+    <nav>
+      
+      <a href="networkp_welcome.html">Home</a>
+      <a href="networkp_aidoneus.html">About Me</a>
+      <a href="networkp_aidoneus.html">Get in Touch</a>
+    </nav>
+  </header>
+
+  <main>
+   
+
+    <div id="rickRoll">
+      <img src="images/rickroll.gif" alt="Rick Astley" />
+      <audio id="rickAudio" src="assets/rickroll.mp3"></audio>
+    </div>
+
+<!-- Layer 7 -->
+    <div class="layer-group">
+      <div class="layer-title">Layer 7: Application Layer</div>
+      <div class="issue-card" onclick="location.href='issues/issue1.html'">
+        <div class="issue-title"> Email Spoofing in Corporate Networks</div>
+        <div class="issue-desc">Unauthorized emails impersonating trusted senders due to lack of email authentication.</div>
+      </div>
+      <div class="issue-card" onclick="location.href='issues/issue2.html'">
+        <div class="issue-title"> Application-Layer DDoS Attack
+</div>
+        <div class="issue-desc">Application-layer DDoS attacks flooding web servers with seemingly legitimate requests.</div>
+      </div>
+     
+    </div>
+
+    <!-- Layer 6 -->
+    <div class="layer-group">
+      <div class="layer-title">Layer 6: Presentation Layer</div>
+      <div class="issue-card" onclick="location.href='issues/issue3.html'">
+        <div class="issue-title"> Man-in-the-Middle via SSL Strip</div>
+        <div class="issue-desc">Man-in-the-middle attacks that downgrade HTTPS to HTTP to intercept data.</div>
+      </div>
+            <div class="issue-card" onclick="location.href='issues/issue4.html'">
+        <div class="issue-title"> Certificate Pinning Failure</div>
+        <div class="issue-desc">Certificate pinning failures causing apps to reject updated certificates.</div>
+      </div>
+    </div>
+
+    <!-- Layer 5 -->
+    <div class="layer-group">
+      <div class="layer-title">Layer 5: Session Layer</div>
+      <div class="issue-card" onclick="location.href='issues/issue5.html'">
+        <div class="issue-title"> Unauthorized Session Hijack</div>
+        <div class="issue-desc">Session hijacking through stolen cookies or tokens.</div>
+      </div>
+      <div class="issue-card" onclick="location.href='issues/issue6.html'">
+        <div class="issue-title"> WebSocket Session Mismanagement</div>
+        <div class="issue-desc">WebSocket mismanagement leading to data leakage between users.</div>
+      </div>
+    </div>
+
+    <!-- Layer 4 -->
+    <div class="layer-group">
+      <div class="layer-title">Layer 4: Transport Layer</div>
+      <div class="issue-card" onclick="location.href='issues/issue7.html'">
+        <div class="issue-title"> UDP Flood Attack</div>
+        <div class="issue-desc">UDP floods exploiting connectionless protocol weaknesses.</div>
+      </div>
+      <div class="issue-card" onclick="location.href='issues/issue8.html'">
+        <div class="issue-title"> TCP SYN Flood</div>
+        <div class="issue-desc">TCP SYN floods overwhelming server connection tables with half-open connections.</div>
+      </div>
+    </div>
+
+    <!-- Layer 3 -->
+    <div class="layer-group">
+      <div class="layer-title">Layer 3: Network Layer</div>
+      <div class="issue-card" onclick="location.href='issues/issue9.html'">
+        <div class="issue-title"> IP Spoofing</div>
+        <div class="issue-desc">IP spoofing to bypass network filters and launch attacks.</div>
+      </div>
+      <div class="issue-card" onclick="location.href='issues/issue10.html'">
+        <div class="issue-title"> Subnet Overlap</div>
+        <div class="issue-desc">Subnet overlaps causing routing conflicts and connectivity issues.</div>
+      </div>
+    </div>
+
+    <!-- Layer 2 -->
+    <div class="layer-group">
+      <div class="layer-title">Layer 2: Data Link Layer</div>
+      <div class="issue-card" onclick="location.href='issues/issue11.html'">
+        <div class="issue-title"> Switch Broadcast Storm</div>
+        <div class="issue-desc">Broadcast storms due to network loops without Spanning Tree Protocol.</div>
+      </div>
+      <div class="issue-card" onclick="location.href='issues/issue12.html'">
+        <div class="issue-title"> ARP Spoofing</div>
+        <div class="issue-desc">ARP spoofing to redirect traffic through malicious devices.</div>
+      </div>
+    </div>
+
+    <!-- Layer 1 -->
+    <div class="layer-group">
+      <div class="layer-title">Layer 1: Physical Layer</div>
+      <div class="issue-card" onclick="location.href='issues/issue13.html'">
+        <div class="issue-title"> Electromagnetic Interference (EMI)</div>
+        <div class="issue-desc">Electromagnetic interference causing signal degradation and data loss.</div>
+      </div>
+      <div class="issue-card" onclick="location.href='issues/issue14.html'">
+        <div class="issue-title"> Improper Termination of Cables</div>
+        <div class="issue-desc">Improper cable termination leading to intermittent connectivity.</div>
+      </div>
+    </div>
+  </main>
+
+  <div class="button-section" style="text-align: center; margin: 2rem 0;">
+    <button id="wantMoreBtn" class="btn">Want More?</button>
+  </div>
+
+  <!-- Go to Top Button -->
+  <button id="goTopBtn" title="Go to top" style="display:none;position:fixed;bottom:40px;right:40px;z-index:1100;padding:12px 18px;font-size:1.2rem;background:#2d6843;color:#fff;border:none;border-radius:50%;box-shadow:0 2px 8px #0006;cursor:pointer;">↑</button>
+
+  <footer>
+    <p>2025 Aidoneus. All rights reserved.</p>
+  </footer>
+
+  <!-- Music note animation container -->
+  <div id="noteContainer"></div>
+
+  <!-- Custom popup for Easter Egg -->
+  <div id="popup" class="custom-popup hidden">
+    <div class="popup-content">
+      <p>🎉 You found the Easter Egg!</p>
+      <button id="closePopup" class="btn">Close</button>
+    </div>
+  </div>
+
+  <script src="networkp_script.js"></script>
+  <script>
+    // Collapsible Layer Groups
+    document.querySelectorAll('.layer-group').forEach(function(group) {
+      const title = group.querySelector('.layer-title');
+      if (title) {
+        // Add collapse button BEFORE the text
+        const btn = document.createElement('button');
+        btn.textContent = '−';
+        btn.style.marginRight = '15px';
+        btn.style.background = '#1e2d2f';
+        btn.style.color = '#fbfcff';
+        btn.style.border = 'none';
+        btn.style.fontSize = '1.2rem';
+        btn.style.cursor = 'pointer';
+        btn.style.borderRadius = '5px';
+        btn.setAttribute('aria-expanded', 'true');
+        // Insert button as first child
+        title.insertBefore(btn, title.firstChild);
+        // Find all issue cards in this group
+        const issues = Array.from(group.querySelectorAll('.issue-card'));
+        btn.addEventListener('click', function() {
+          const expanded = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', String(!expanded));
+          btn.textContent = expanded ? '+' : '−';
+          issues.forEach(card => card.style.display = expanded ? 'none' : '');
+        });
+      }
+    });
+
+    // Go to Top Button
+    const goTopBtn = document.getElementById('goTopBtn');
+    window.addEventListener('scroll', function() {
+      goTopBtn.style.display = (window.scrollY > 200) ? 'block' : 'none';
+    });
+    goTopBtn.addEventListener('click', function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  </script>
+</body>
+</html>

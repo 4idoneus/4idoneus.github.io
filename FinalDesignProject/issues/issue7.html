@@ -1,0 +1,172 @@
+<!--
+  Issue: Certificate Pinning Failure
+  Layer 6 - Presentation Layer
+  Updated with detailed scenario, solution explanation, and step-by-step guide
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UDP Flood</title>
+  <link rel="stylesheet" href="../networkp_style.css">
+  <style>
+    .collapsible {
+      background-color: #2d6843;
+      color: #fbfcff;
+      cursor: pointer;
+      padding: 1rem 1.2rem;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.3rem;
+      font-family: 'MyFonts', Arial, sans-serif;
+      border-radius: 8px;
+      margin: 1.2rem 0 0.5rem 0;
+      transition: background 0.3s;
+    }
+    .collapsible.active, .collapsible:hover {
+      background-color: #192c1e;
+      color: #a3d9a5;
+    }
+    .collapsible-content {
+      padding: 0 1.2rem 1.2rem 1.2rem;
+      background: #192c1e;
+      color: #fbfcff;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 1.2rem;
+      display: none;
+      font-size: 1.08rem;
+      font-family: 'MyGenFonts', Arial, sans-serif;
+      animation: fadeIn 0.3s;
+      line-height: 1.7;
+      font-weight: 100;
+    }
+    .collapsible-content.show {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #toTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 100;
+      background: #2d6843;
+      color: #fbfcff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0003;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    #toTopBtn:hover {
+      background: #a3d9a5;
+      color: #192c1e;
+    }
+  </style>
+</head>
+<body>
+  <header class="custom-header">
+    <div class="header-content">
+      <h1 class="main-title">UDP Flood</h1>
+      <nav class="main-nav">
+        <a href="../networkp_index.html">Back to Issues List</a>
+        <a href="../networkp_aidoneus.html">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section>
+      <button class="collapsible">Layer 4 - Transport Layer</button>
+      <div class="collapsible-content show">
+        <button class="collapsible">Scenario & Problem</button>
+        <div class="collapsible-content">
+          <p>
+            A company's critical DNS server suddenly becomes unresponsive, causing widespread service outages as users cannot resolve domain names. Analysis of network traffic reveals a massive influx of UDP packets targeting the DNS server's port 53. These packets often have spoofed source IP addresses and appear to be legitimate DNS queries, but their sheer volume overwhelms the server's processing capacity and bandwidth. This is a UDP flood, a common type of Denial-of-Service (DoS) attack where the attacker attempts to exhaust server resources or network links by sending a large volume of UDP traffic.
+          </p>
+        </div>
+        <button class="collapsible">Why the Solution Works</button>
+        <div class="collapsible-content">
+          <p>
+            Rate limiting and Access Control Lists (ACLs) are fundamental tools to mitigate UDP floods by controlling and filtering the volume and source of incoming traffic.
+           <ul>
+            <li><strong>Rate Limiting:</strong> Specifies the maximum amount of traffic (e.g., packets per second, megabits per second) allowed to a specific destination or port. Once the threshold is exceeded, subsequent packets are dropped. This prevents a single attacker or a distributed attack from consuming all available server resources or network bandwidth.</li>
+            <li><strong>Access Control Lists (ACLs):</strong> Define rules to permit or deny traffic based on various criteria such as source IP address, destination IP address, port number, and protocol. During a UDP flood, ACLs can be dynamically configured to block traffic from identified malicious source IP addresses or ranges, or to limit the rate of UDP traffic to specific ports.</li>
+          </ul>
+          </p>
+        </div>
+        <button class="collapsible">🛠 Step-by-Step Solution</button>
+        <div class="collapsible-content">
+          <ol>
+            <li>Identify Traffic Patterns and Attack Signatures: During an attack, use network monitoring tools (e.g., Wireshark, NetFlow/sFlow analyzers, intrusion detection systems) to identify the source IP addresses, UDP port numbers, and the volume of the malicious traffic. Look for common attack patterns like a sudden surge in traffic from seemingly random or non-existent source IPs.</li>
+            <li>Apply Rate-Limiting Policies: Implement rate-limiting on network devices (routers, firewalls) or on the server itself. For a DNS server, you might limit the number of UDP DNS queries per second from any single source IP or total queries to the server.<ul>
+                <li>Example: On a Cisco router, you can use the command <code>rate-limit input access-group 101 8000000 2000000 conform-action transmit exceed-action drop</code> to limit the rate of incoming traffic.</li>
+            </ul></li>
+            <li>Use ACLs to Block Repeated Sources: If specific source IP addresses are consistently involved in the flood (especially if they are not spoofed or if the spoofed range is predictable), create and apply ACLs to immediately block all traffic originating from those IPs.<ul>
+                <li>Example: On a Cisco router, you can use the command <code>access-list 101 deny udp host &lt;malicious_IP&gt; any eq 53</code> to block UDP traffic from a specific malicious IP address to port 53.</li>
+            </ul></li>
+            <li>Redirect to Sinkhole (If Necessary and Possible): For very large-scale, sustained attacks, or when dealing with highly spoofed traffic, you might consider diverting the malicious traffic to a "sinkhole" router. A sinkhole is a router configured to accept and drop traffic destined for the attacked IP address, preventing it from reaching the actual server. This is typically done in collaboration with an ISP or a DDoS mitigation service.</li>
+     
+          </ol>
+        </div>
+        <button class="collapsible">Packet Tracer Simulation: Possible</button>
+        <div class="collapsible-content">
+          <ul>
+            <li><b>Basic Principle for Problem:</b> Configure a DNS server. Use multiple client PCs to send frequent UDP requests (e.g., simulated DNS queries) to the server. Observe the server's CPU utilization or response time degrade.</li>
+            <li><b>Basic Principle for Solution:</b> Create ACLs on a router to block high-rate UDP sources targeting the DNS server's port. Apply these ACLs to the router interface connected to the server or the incoming internet connection using commands like <code>ip access-group &#60 ACL_number &#62 in </code>.</li>
+          </ul>
+        </div>
+        <button class="collapsible">Sources</button>
+        <div class="collapsible-content">
+          <ul>
+            <li><a href="https://www.cloudflare.com/learning/ddos/udp-flood-ddos-attack/" target="_blank">Cloudflare: What is a UDP flood?</a></li>
+            <li><a href="https://www.cisco.com/c/en/us/td/docs/switches/datacenter/nexus3400s/sw/93x/security/configuration/guide/Cisco-n3400-nx-os-security-configuration-guide-93x/m-configuring-rate-limites-922.pdf" target="_blank">Cisco: Configuring Traffic Rate Limiting</a></li>
+            <li><a href="https://support.huawei.com/enterprise/en/doc/EDOC1100336503/99cec7e7/understanding-defense-against-udp-flood-attacks" target="_blank">Huawei: Understanding Defence Against UDP Flood Attacks</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <button id="toTopBtn" title="Return to Top">↑</button>
+  <footer class="custom-footer">
+    2025 Aidoneus. All rights reserved.
+  </footer>
+  <script>
+    // Collapsible logic
+    document.querySelectorAll('.collapsible').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = this.nextElementSibling;
+        if (content) {
+          content.classList.toggle('show');
+        }
+      });
+    });
+    // Show first section open by default
+    document.querySelectorAll('.collapsible-content')[0].classList.add('show');
+
+    // Return to Top button logic
+    const toTopBtn = document.getElementById('toTopBtn');
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = 'flex';
+      } else {
+        toTopBtn.style.display = 'none';
+      }
+    };
+    toTopBtn.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,175 @@
+<!--
+  Issue: Certificate Pinning Failure
+  Layer 6 - Presentation Layer
+  Updated with detailed scenario, solution explanation, and step-by-step guide
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TCP SYN Flood</title>
+  <link rel="stylesheet" href="../networkp_style.css">
+  <style>
+    .collapsible {
+      background-color: #2d6843;
+      color: #fbfcff;
+      cursor: pointer;
+      padding: 1rem 1.2rem;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.3rem;
+      font-family: 'MyFonts', Arial, sans-serif;
+      border-radius: 8px;
+      margin: 1.2rem 0 0.5rem 0;
+      transition: background 0.3s;
+    }
+    .collapsible.active, .collapsible:hover {
+      background-color: #192c1e;
+      color: #a3d9a5;
+    }
+    .collapsible-content {
+      padding: 0 1.2rem 1.2rem 1.2rem;
+      background: #192c1e;
+      color: #fbfcff;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 1.2rem;
+      display: none;
+      font-size: 1.08rem;
+      font-family: 'MyGenFonts', Arial, sans-serif;
+      animation: fadeIn 0.3s;
+      line-height: 1.7;
+      font-weight: 100;
+    }
+    .collapsible-content.show {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #toTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 100;
+      background: #2d6843;
+      color: #fbfcff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0003;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    #toTopBtn:hover {
+      background: #a3d9a5;
+      color: #192c1e;
+    }
+  </style>
+</head>
+<body>
+  <header class="custom-header">
+    <div class="header-content">
+      <h1 class="main-title">TCP SYN Flood</h1>
+      <nav class="main-nav">
+        <a href="../networkp_index.html">Back to Issues List</a>
+        <a href="../networkp_aidoneus.html">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section>
+      <button class="collapsible">Layer 4 - Transport Layer</button>
+      <div class="collapsible-content show">
+        <button class="collapsible">Scenario & Problem</button>
+        <div class="collapsible-content">
+          <p>
+            A web server suddenly stops responding to legitimate connection requests, while its network connections table fills up with a large number of "half-open" connections (connections in the SYN_RECV state). This is a TCP SYN Flood attack. The attacker sends a high volume of TCP SYN (synchronize) packets to the server but never responds to the server's SYN-ACK (synchronize-acknowledgment). The server allocates resources (memory for connection state) for each incoming SYN request, waiting for the final ACK from the client. By exhausting the server's connection table or backlog queue with these half-open connections, the attacker prevents legitimate clients from establishing new connections, leading to a Denial of Service.
+          </p>
+        </div>
+        <button class="collapsible">Why the Solution Works</button>
+        <div class="collapsible-content">
+          <p>
+            SYN cookies and reduced SYN-ACK retries are effective countermeasures against SYN floods by preventing server resource exhaustion and quickly dropping unproductive connections.
+           <ul>
+            <li><strong>SYN Cookies:</strong> A technique where the server does not immediately allocate resources for each incoming SYN request. Instead, it encodes the SYN request's information (source IP, port, sequence numbers) into a cryptographic "cookie" and sends it back in the SYN-ACK packet. Only when the client sends back a valid ACK packet containing this "cookie" (completing the handshake) does the server then reconstruct the connection state. This means no resources are allocated until the handshake is complete, preventing the backlog from being exhausted by spoofed or unresponding SYN requests.</li>
+            <li><strong>Reduced<code>tcp_synack_retries</code></strong> By default, a server might retransmit SYN-ACK packets several times if it doesn't receive an ACK. Reducing the number of retries means the server gives up on half-open connections faster, freeing up resources more quickly and reducing the time the server holds onto state for potentially malicious connections.</li>
+            <li><strong>Firewall Rules:</strong> Can monitor TCP connection rates and patterns. They can detect an abnormal surge in SYN packets without corresponding ACKs and implement rate limiting or block suspicious IPs at an earlier stage.</li>
+          </ul>
+          </p>
+        </div>
+        <button class="collapsible">🛠 Step-by-Step Solution</button>
+        <div class="collapsible-content">
+          <ol>
+            <li><strong>SYN Cookies:</strong> This is a kernel-level setting on most modern operating systems.<ul>
+                <li><strong>Linux:</strong>Enable by setting <code>net.ipv4.tcp_syncookies </code> to <code>1</code>. This can be done temporarily with <code>-n -w net.ipv4.tcp_syncookies=1</code> or persistently by adding <code>net.ipv4.tcp_syncookies = 1</code> to <code>/etc/sysctl.conf</code> and running <code>sudo sysctl -p</code>.</li>
+            </ul></li>
+            <li><strong>Reduce<code>tcp_synack_retries</code>:</strong> Rate-Limiting Policies: Adjust the kernel parameter that controls the number of SYN-ACK retransmissions. Lowering this value (e.g., to 2 or 3) makes the server drop half-open connections faster.<ul>
+                <li><strong>Linux:</strong>Set <code> net.ipv4.tcp_synack_retries</code> to a lower value. Temporarily: <code>sysctl -n -w net.ipv4.tcp_synack_retries=2.</code> Persistently: add <code>net.ipv4.tcp_synack_retries = 2 </code> to /etc/sysctl.conf</code>.</li>
+            </ul></li>
+            <li><strong>Apply Firewall Rules to Detect and Mitigate SYN Floods:</strong> AConfigure your host-based firewall (e.g., iptables on Linux, Windows Firewall) or network firewall (e.g., Cisco ASA, Palo Alto) to detect and respond to SYN floods. This can involve:<ul>
+                <li><strong>Rate Limiting:</strong>Limiting the number of new TCP connections allowed from a single source IP per second.</li>
+                <li><strong>SYN Proxying:</strong>Some firewalls can act as a SYN proxy, performing the 3-way handshake with the client on behalf of the server before forwarding the connection, similar to how SYN cookies work.</li>
+                <li><strong>Stateful Inspection</strong>Monitoring the TCP state table for an excessive number of half-open connections.</li>                
+            </ul></li>     
+          </ol>
+        </div>
+        <button class="collapsible">Packet Tracer Simulation: Possible</button>
+        <div class="collapsible-content">
+          <ul>
+            <li><b>Basic Principle for Problem:</b> Set up a server (e.g., HTTP server) and multiple client PCs. On the client PCs, simulate a SYN flood by sending TCP SYN packets without completing the handshake. Observe the server's inability to establish new connections with legitimate clients. (Packet Tracer's TCP stack might not fully expose resource exhaustion, but the concept of repeated SYNs can be demonstrated).</li>
+            <li><b>Basic Principle for Solution:</b> Apply an ACL on a router or firewall device to limit the number of new TCP connections allowed per source IP or total connections. Use extended ACLs with TCP flags to specifically deny excessive SYN packets (established keyword can be used to allow only established connections, or rate-limit new ones).</li>
+          </ul>
+        </div>
+        <button class="collapsible">Sources</button>
+        <div class="collapsible-content">
+          <ul>
+            <li><a href="https://www.cloudflare.com/learning/ddos/syn-flood-ddos-attack/" target="_blank">Cloudflare: What is a SYN flood attack?</a></li>
+            <li><a href="https://cr.yp.to/syncookies.html" target="_blank">D.J. Bernstein: SYN Cookies</a></li>
+            <li><a href="https://www.cisco.com/c/en/us/td/docs/switches/lan/csbss/CBS220/CLI-Guide/b_220CLI/syn_protection_commands.pdf" target="_blank">Cisco: TCP SYN Protection Commands</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <button id="toTopBtn" title="Return to Top">↑</button>
+  <footer class="custom-footer">
+    2025 Aidoneus. All rights reserved.
+  </footer>
+  <script>
+    // Collapsible logic
+    document.querySelectorAll('.collapsible').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = this.nextElementSibling;
+        if (content) {
+          content.classList.toggle('show');
+        }
+      });
+    });
+    // Show first section open by default
+    document.querySelectorAll('.collapsible-content')[0].classList.add('show');
+
+    // Return to Top button logic
+    const toTopBtn = document.getElementById('toTopBtn');
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = 'flex';
+      } else {
+        toTopBtn.style.display = 'none';
+      }
+    };
+    toTopBtn.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  </script>
+</body>
+</html>

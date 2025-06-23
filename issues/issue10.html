@@ -1,0 +1,175 @@
+<!--
+  Issue: Subnet Overlap
+  Layer 3 - Network Layer
+  Updated with detailed scenario, solution explanation, and step-by-step guide
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Subnet Overlap</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .collapsible {
+      background-color: #2d6843;
+      color: #fbfcff;
+      cursor: pointer;
+      padding: 1rem 1.2rem;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.3rem;
+      font-family: 'MyFonts', Arial, sans-serif;
+      border-radius: 8px;
+      margin: 1.2rem 0 0.5rem 0;
+      transition: background 0.3s;
+    }
+    .collapsible.active, .collapsible:hover {
+      background-color: #192c1e;
+      color: #a3d9a5;
+    }
+    .collapsible-content {
+      padding: 0 1.2rem 1.2rem 1.2rem;
+      background: #192c1e;
+      color: #fbfcff;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 1.2rem;
+      display: none;
+      font-size: 1.08rem;
+      font-family: 'MyGenFonts', Arial, sans-serif;
+      animation: fadeIn 0.3s;
+      line-height: 1.7;
+      font-weight: 100;
+    }
+    .collapsible-content.show {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #toTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 100;
+      background: #2d6843;
+      color: #fbfcff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0003;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    #toTopBtn:hover {
+      background: #a3d9a5;
+      color: #192c1e;
+    }
+  </style>
+</head>
+<body>
+  <header class="custom-header">
+    <div class="header-content">
+      <h1 class="main-title">Subnet Overlap</h1>
+      <nav class="main-nav">
+        <a href="../issueslist.html">Back to Issues List</a>
+        <a href="../aidoneus.html">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section>
+      <button class="collapsible">Layer 3 - Network Layer</button>
+      <div class="collapsible-content show">
+        <button class="collapsible">Scenario & Problem</button>
+        <div class="collapsible-content">
+          <p>
+            A company acquires a smaller business. When attempting to integrate the two networks, IT discovers that both the main office and the newly acquired site are using the identical IP subnet, for example, 192.168.1.0/24. When a VPN tunnel or a direct connection is established between the two sites, devices in the main office cannot reach devices in the acquired site that have IP addresses in 192.168.1.0/24 (e.g., 192.168.1.10) and vice-versa. This occurs because the routers at each site see 192.168.1.0/24 as a directly connected local network, causing routing tables to become ambiguous and preventing traffic from being forwarded correctly across the connection.
+          </p>
+        </div>
+        <button class="collapsible">Why the Solution Works</button>
+        <div class="collapsible-content">
+          <p>
+            Network segmentation and proper IP address planning are crucial. Readdressing one of the overlapping subnets ensures that every network segment within the interconnected enterprise has a unique and unambiguous IP address range. This allows routers to correctly build their routing tables, determining the precise path for traffic destined for any host in either network. Without unique subnets, routers cannot differentiate between local traffic and remote traffic destined for the "same" subnet at another location, leading to routing failures.
+          </p>
+        </div>
+        <button class="collapsible">🛠 Step-by-Step Solution</button>
+        <div class="collapsible-content">
+          <ol>
+            <li><strong>Identify All Overlapping Subnets and Devices:</strong> Perform a comprehensive network audit at both sites to identify all devices (servers, workstations, printers, network devices) that have static IP addresses or rely on DHCP within the overlapping subnet. Document their current IP addresses and their function.</li>
+            <li><strong>Plan a New, Non-Overlapping Subnet:</strong> Select a new, unique IP subnet (e.g., 192.168.2.0/24 or 10.0.0.0/24 if using private RFC1918 addresses) that does not conflict with any existing subnets in either network. Ensure the new subnet is large enough to accommodate current and future growth.</li>
+            <li><strong>Reconfigure One Site to the New Subnet:</strong> Choose one of the sites (typically the smaller or less critical one) to readdress. This involves:
+              <ul>
+                <li><strong>Update Router/Layer 3 Switch Interfaces:</strong> Change the IP address and subnet mask on the network interfaces of routers and Layer 3 switches that serve the affected subnet.</li>
+                <li><strong>Update DHCP Server Scope:</strong> If DHCP is used, modify the DHCP server to lease IP addresses from the new subnet range.</li>
+                <li><strong>Update Static IP Addresses:</strong> Manually reconfigure all devices with static IP addresses (servers, network printers, management interfaces) to use an IP address within the new subnet.</li>
+                <li><strong>Update DNS Records:</strong> If any devices in the readdressed subnet are referenced by DNS (e.g., internal servers), update their A records with their new IP addresses.</li>
+              </ul>
+            </li>
+            <li><strong>Update Routing Tables:</strong> After readdressing, ensure that routing tables on all interconnected routers (including those managing VPNs) are updated to reflect the new subnet. This might involve:
+              <ul>
+                <li><strong>Static Routes:</strong> If using static routing, add new static routes pointing to the readdressed subnet.</li>
+                <li><strong>Dynamic Routing Protocols (OSPF/EIGRP):</strong> If using dynamic routing protocols, ensure the newly configured interface is included in the routing protocol advertisements so that other routers learn about the new subnet.</li>
+              </ul>
+            </li>
+            <li><strong>Test Connectivity and Services:</strong> After readdressing and updating routes, thoroughly test connectivity from both sites to devices in the reconfigured subnet. Verify that all applications and services function correctly.</li>
+          </ol>
+        </div>
+        <button class="collapsible">Packet Tracer Simulation: Possible</button>
+        <div class="collapsible-content">
+          <ul>
+            <li><b>Basic Principle for Problem:</b> Configure two separate router networks with the same subnet (e.g., 192.168.1.0/24) on their respective LAN interfaces. Attempt to establish connectivity between hosts in these two segments via a third routing device or a direct link. Packet Tracer will illustrate the routing failure due to the overlapping address space.</li>
+            <li><b>Basic Principle for Solution:</b> Change the subnet IP address and mask on the LAN interface of one of the routers. Reconfigure any static IPs on devices in that subnet and update routing protocols or static routes on all interconnected routers to reflect the new, unique network. Verify successful ping and communication.</li>
+          </ul>
+        </div>
+        <button class="collapsible">Sources</button>
+        <div class="collapsible-content">
+          <ul>
+            <li><a href="https://www.cisco.com/c/en/us/support/docs/ip/routing-information-protocol-rip/13788-3.html" target="_blank">Cisco: IP Addressing and Subnetting For New Users</a></li>
+            <li><a href="https://ptgmedia.pearsoncmg.com/images/9780137449941/samplepages/9780137449941_Sample.pdf" target="_blank">CompTIA Network+ N10-008 Cert Guide (Chapter on IP Addressing)</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <button id="toTopBtn" title="Return to Top">↑</button>
+  <footer class="custom-footer">
+    2025 Aidoneus. All rights reserved.
+  </footer>
+  <script>
+    // Collapsible logic
+    document.querySelectorAll('.collapsible').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = this.nextElementSibling;
+        if (content) {
+          content.classList.toggle('show');
+        }
+      });
+    });
+    // Show first section open by default
+    document.querySelectorAll('.collapsible-content')[0].classList.add('show');
+
+    // Return to Top button logic
+    const toTopBtn = document.getElementById('toTopBtn');
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = 'flex';
+      } else {
+        toTopBtn.style.display = 'none';
+      }
+    };
+    toTopBtn.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  </script>
+</body>
+</html>

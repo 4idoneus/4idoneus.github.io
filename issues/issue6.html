@@ -1,0 +1,155 @@
+<!--
+  Issue: WebSocket Session Mismanagement
+  Layer 5 - Session Layer
+  Updated with detailed scenario, solution explanation, and step-by-step guide
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WebSocket Session Mismanagement</title>
+  <link rel="stylesheet" href="../style.css">
+  <style>
+    .collapsible {
+      background-color: #2d6843;
+      color: #fbfcff;
+      cursor: pointer;
+      padding: 1rem 1.2rem;
+      width: 100%;
+      border: none;
+      text-align: left;
+      outline: none;
+      font-size: 1.3rem;
+      font-family: 'MyFonts', Arial, sans-serif;
+      border-radius: 8px;
+      margin: 1.2rem 0 0.5rem 0;
+      transition: background 0.3s;
+    }
+    .collapsible.active, .collapsible:hover {
+      background-color: #192c1e;
+      color: #a3d9a5;
+    }
+    .collapsible-content {
+      padding: 0 1.2rem 1.2rem 1.2rem;
+      background: #192c1e;
+      color: #fbfcff;
+      border-radius: 0 0 8px 8px;
+      margin-bottom: 1.2rem;
+      display: none;
+      font-size: 1.08rem;
+      font-family: 'MyGenFonts', Arial, sans-serif;
+      animation: fadeIn 0.3s;
+      line-height: 1.7;
+      font-weight: 100;
+    }
+    .collapsible-content.show {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    #toTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      z-index: 100;
+      background: #2d6843;
+      color: #fbfcff;
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      font-size: 2rem;
+      cursor: pointer;
+      box-shadow: 0 2px 8px #0003;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.3s;
+    }
+    #toTopBtn:hover {
+      background: #a3d9a5;
+      color: #192c1e;
+    }
+  </style>
+</head>
+<body>
+  <header class="custom-header">
+    <div class="header-content">
+      <h1 class="main-title">WebSocket Session Mismanagement</h1>
+      <nav class="main-nav">
+        <a href="../issueslist.html">Back to Issues List</a>
+        <a href="../aidoneus.html">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <section>
+      <button class="collapsible">Layer 5 - Session Layer</button>
+      <div class="collapsible-content show">
+        <button class="collapsible">Scenario & Problem</button>
+        <div class="collapsible-content">
+          <p>A real-time chat application uses WebSocket connections to facilitate instant messaging between users. A vulnerability exists where the WebSocket connection is established and then maintained without sufficient validation of the user's session token or authentication state throughout its lifecycle. This allows an attacker, who might have stolen an old session token or somehow obtained a valid WebSocket ID, to potentially "hijack" an existing WebSocket connection or, worse, to send messages that appear to come from another user's session. This could lead to sensitive user data (e.g., private messages) being inadvertently exposed to the wrong client or an attacker injecting malicious messages into another user's chat.</p>
+        </div>
+        <button class="collapsible">Why the Solution Works</button>
+        <div class="collapsible-content">
+          <p>Proper session management for WebSockets ensures that each active WebSocket connection is securely bound to a legitimate, authenticated user session. By validating session tokens not only at the initial handshake but also periodically (or upon sensitive operations), the server can verify the user's identity throughout the connection's lifetime. This prevents unauthorized users from accessing or manipulating data streams intended for others, ensuring that real-time communication remains private and secure. If the session token becomes invalid (e.g., user logs out elsewhere, session expires), the WebSocket connection should be terminated or re-authenticated.</p>
+        </div>
+        <button class="collapsible">🛠 Step-by-Step Solution</button>
+        <div class="collapsible-content">
+          <ol>
+            <li>Require Token Validation on WebSocket Handshake: When a client initiates a WebSocket connection (the HTTP handshake phase), the server must validate an authentication token (e.g., a JWT, an OAuth token, or a secure session cookie) provided by the client. If the token is missing, invalid, or expired, reject the handshake.</li>
+            <li>Bind Sockets to User Sessions Securely: After successful authentication, associate the established WebSocket connection directly with the authenticated user's active session ID on the server-side. Ensure that messages sent or received over a specific WebSocket are strictly routed to/from the corresponding user's session. This means preventing a WebSocket from being used to access data or functionality belonging to a different user.</li>
+            <li>Implement Periodic Token Re-validation (Optional but Recommended): For long-lived WebSocket connections, consider implementing a mechanism to periodically re-validate the user's authentication token or ensure the underlying session is still active. If the token expires or the user logs out from another browser tab, the WebSocket connection should be gracefully closed or the user prompted to re-authenticate.</li>
+            <li>Log Unauthorized Access Attempts: Implement robust logging for all WebSocket connection attempts, especially those with invalid or missing authentication tokens, or any instances where a WebSocket attempts to access unauthorized resources. This helps in detecting and investigating potential session mismanagement or hijacking attempts.</li>
+          </ol>
+        </div>
+        <button class="collapsible">Cisco Packet Tracer Simulation</button>
+        <div class="collapsible-content">
+          <p><strong>Not supported.</strong> WebSocket protocols, their session management logic, and the authentication/authorization processes for real-time applications are beyond Packet Tracer's simulation capabilities.</p>
+        </div>
+        <button class="collapsible">Sources</button>
+        <div class="collapsible-content">
+          <ul>
+            <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Web_Service_Security_Cheat_Sheet.html" target="_blank">OWASP: Web Security Cheatsheet</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API/Writing_WebSocket_servers#security_considerations" target="_blank">Mozilla: WebSockets API (Security Considerations)</a></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <button id="toTopBtn" title="Return to Top">↑</button>
+  <footer class="custom-footer">
+    2025 Aidoneus. All rights reserved.
+  </footer>
+  <script>
+    // Collapsible logic
+    document.querySelectorAll('.collapsible').forEach(btn => {
+      btn.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const content = this.nextElementSibling;
+        if (content) {
+          content.classList.toggle('show');
+        }
+      });
+    });
+    // Show first section open by default
+    document.querySelectorAll('.collapsible-content')[0].classList.add('show');
+
+    // Return to Top button logic
+    const toTopBtn = document.getElementById('toTopBtn');
+    window.onscroll = function() {
+      if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+        toTopBtn.style.display = 'flex';
+      } else {
+        toTopBtn.style.display = 'none';
+      }
+    };
+    toTopBtn.onclick = function() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+  </script>
+</body>
+</html>

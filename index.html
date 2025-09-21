@@ -9,10 +9,9 @@
 <body>
   <header class="custom-header">
     <div class="header-content">
-      <h1 class="main-title">Ai’s Admin Guide to OSI Layer Issues</h1>
-      <div class="subtitle">CSE 3136 &amp; CSE 3106 Final Project</div>
+      <h1 class="main-title">Ai’s Admin Guide to Aidoneus</h1>
+      <div class="subtitle">My personal website to my projects and myself</div>
       <nav class="main-nav">
-        <a href="issueslist.html">Issue List</a>
         <a href="aidoneus.html">About Me</a>
         <a href="aidoneus.html">Get in Touch</a>
       </nav>
@@ -30,8 +29,8 @@
         <div class="laundry-list-box">
           <div class="laundry-title" id="laundryTitle">Laundry List</div>
           <ul id="laundryList">
-            <li>Cisco Packet Tracer Simulation to the issues.</li>
-            <li>Solution videos for Cisco Packet Tracer Simulations</li>
+            <li>Organize  the  guide.</li>
+            <li>Add a blog section</li>
           </ul>
         </div>
         <button class="circle-btn" id="laundryRightBtn"><span class="arrow">&#8594;</span></button>
@@ -41,22 +40,30 @@
       <div class="welcome-box">
         <div class="welcome-title">Welcome</div>
         <div class="welcome-text">
-          Hello there! I did not expect you to find this page, but here we are. This is my final project for CSE 3136 and CSE 3106.<br></br>
-          This guide concisely covers network troubleshooting by OSI layer. Each entry provides a problem scenario, explains the solution's effectiveness, offers step-by-step fixes, notes Cisco Packet Tracer compatibility, and includes sources for deeper dives.<br></br>
-          Okay so, I put everyting I know about Network in this guide, but there can be mistakes I made on the way. If you have find them or any questions, suggestions, feel free to reach out to me via the contact page. Let's get started. Go to the <a href="issueslist.html">issue list</a> to begin exploring the issues and solutions.<br></br>
+         Hello there! I didn’t expect you to stumble upon this page, but here we are.  
+          This is my guide on how to be an average Joe in IT — and at the same time, it’s also my personal website, diary, and blog-like to-do list. <br><br>
+          This guide concisely covers the essentials of IT from a beginner’s perspective — things I’ve learned, mistakes I’ve made, and practical insights that might help you along the way. Whether you’re just starting out or simply curious, you’ll find simple explanations and examples that make IT a little less intimidating. <br><br>
+  
+          I’ll be sharing everything I know about IT in this guide, but I’m still learning, so there might be mistakes or areas where my knowledge is incomplete. If you spot anything that seems off, or if you have questions, suggestions, or just want to share your thoughts, feel free to reach out to me via the contact page. <br><br>
+  
+  Think of this space as both a learning resource and a journey log — where I collect experiences, refine my skills, and (hopefully) make technology a bit clearer for others too. 
         </div>
+      </div>
       </div>
     </section>
   </main>
 
-  <!-- Popup -->
-  <div id="amateurPopup" class="custom-popup">
-    <div class="popup-content">
-      <p>So polished. Are you sure?</p>
+<!-- Popup -->
+<div id="amateurPopup" class="custom-popup hidden">
+  <div class="popup-content">
+    <p id="popupMessage">Are you sure?</p>
+    <div id="popupButtons">
       <button id="popupYes" class="btn">Yes</button>
       <button id="popupNo" class="btn">No</button>
     </div>
+    <button id="popupClose" class="btn hidden">Close</button>
   </div>
+</div>
 
   <footer class="custom-footer">
     2025 Aidoneus. All rights reserved.

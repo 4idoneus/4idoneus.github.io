@@ -1,40 +1,70 @@
 window.onload = function () {
   const popup = document.getElementById("amateurPopup");
+  const popupMessage = document.getElementById("popupMessage");
   const yesBtn = document.getElementById("popupYes");
   const noBtn = document.getElementById("popupNo");
+  const closeBtn = document.getElementById("popupClose");
+  const popupButtons = document.getElementById("popupButtons");
 
-  if (popup && yesBtn && noBtn) {
+  // IT jokes
+  const jokes = [
+    "Error 404: 'No' not found.",
+    "Access Denied. Please contact your system administrator.",
+    "Nice try, but 'No' is not a valid input.",
+    "Segmentation fault (core dumped).",
+    "Unexpected token 'No'.",
+    "The operation completed successfully… but did nothing.",
+    "Are you sure you’re sure?",
+    "Permission denied. Elevate to root to say No.",
+    "Press any key to continue… except 'No'.",
+    "Congratulations, you’ve clicked the wrong button."
+  ];
+
+  if (popup && yesBtn && noBtn && closeBtn && popupMessage && popupButtons) {
     popup.classList.remove("hidden");
-    yesBtn.addEventListener("click", () => popup.classList.add("hidden"));
-    noBtn.addEventListener("click", () => {
-      window.location.href = "https://cinsdikici.com/";
-    });
-  }
 
-  // Laundry list arrow logic
+    yesBtn.addEventListener("click", () => popup.classList.add("hidden"));
+
+    noBtn.addEventListener("click", () => {
+      const joke = jokes[Math.floor(Math.random() * jokes.length)];
+      popupMessage.textContent = joke;
+
+      // Hide Yes/No, show Close
+      popupButtons.classList.add("hidden");
+      closeBtn.classList.remove("hidden");
+    });
+
+    closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+
+  // -----------------
+  // Laundry list logic
+  // -----------------
   const laundryLists = [
     {
-      title: "Laundry List",
+      title: "Notes",
       items: [
-        "Cisco Packet Tracer Simulation to the issues.",
-        "Solution videos for Cisco Packet Tracer Simulations"
+        "It is a not a complete guide. I am still learning and will update it as I go.",
+        "Sky is the limit when it comes to failures.",
+        "Do not delete the database on your first day of work."
       ]
     },
     {
       title: "Useful Links",
       items: [
-      '<a href="https://www.netacad.com/" target="_blank">Cisco Academy<a>',
-      '<a href="https://www.netacad.com/courses/packet-tracer" target="_blank">Cisco Packet Tracer Download</a>',
+        '<a href="https://cs50.harvard.edu/" target="_blank">HarvardCS50x</a>',
+        '<a href="https://www.youtube.com/" target="_blank">YouTube</a>'
       ]
     },
     {
-      title: "Notes",
+      title: "Laundry List",
       items: [
-        "Improve visual of the website.",
-        "Get a good grade."
+        "Work on organizing the guide.",
+        "Add a blog section",
+        "Change the website structure to python based (Flask or Django).",
       ]
     }
   ];
+
   let laundryIndex = 0;
   const laundryListBox = document.getElementById('laundryList');
   const leftBtn = document.getElementById('laundryLeftBtn');
@@ -48,8 +78,6 @@ window.onload = function () {
   }
 
   if (leftBtn && rightBtn && laundryListBox && laundryTitle) {
-    leftBtn.disabled = false;
-    rightBtn.disabled = false;
     renderLaundryList(laundryIndex);
     leftBtn.addEventListener('click', () => {
       laundryIndex = (laundryIndex - 1 + laundryLists.length) % laundryLists.length;
@@ -60,6 +88,7 @@ window.onload = function () {
       renderLaundryList(laundryIndex);
     });
   }
+}
 
   // Rick Roll functionality
   const wantMoreBtn = document.getElementById('wantMoreBtn');
@@ -116,4 +145,4 @@ window.onload = function () {
       wantMoreBtn.style.display = 'inline-block';
     });
   }
-};
+}

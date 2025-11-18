@@ -1,0 +1,310 @@
+<!--
+  Aidoneus Character & Contact Page
+  - Uses custom styles and global styles from style.css
+  - Contains a character card, about section, and contact links
+  - Header and footer styled for consistency with other pages
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Aidoneus</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Inline styles for character card and contact layout -->
+  <style>
+    /* Character Card Styles */
+    .character-card {
+      background: linear-gradient(135deg, #232526 0%, #414345 100%);
+      border-radius: 22px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
+      color: #fbfcff;
+      width: 370px;
+      margin: 3rem auto 2rem auto;
+      padding: 2.5rem 2rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      border: 3px solid #2d6843;
+      font-family: 'MyGenFonts', Arial, sans-serif;
+      overflow: hidden;
+    }
+    .character-card .avatar {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid #a3d9a5;
+      margin-bottom: 1.2rem;
+      background: #192c1e;
+      box-shadow: 0 0 18px #2d6843a0;
+    }
+    .char-nickname {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #a3d9a5;
+      margin-bottom: 0.2rem;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 8px #000a;
+    }
+    .char-class {
+      font-size: 1.1rem;
+      color: #20beff;
+      margin-bottom: 0.7rem;
+      font-style: italic;
+    }
+    .char-hp-mp {
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .char-hp, .char-mp {
+      background: #1e2d2f;
+      border-radius: 8px;
+      padding: 0.4rem 1.2rem;
+      font-size: 1.1rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #0003;
+    }
+    .char-hp { color: #ff4a4a; border: 1.5px solid #ff4a4a; }
+    .char-mp { color: #20beff; border: 1.5px solid #20beff; }
+    .char-realname {
+      font-size: 1.1rem;
+      color: #fbfcff;
+      margin-bottom: 0.3rem;
+      font-weight: 600;
+    }
+    .char-attack {
+      font-size: 1.05rem;
+      color: #a3d9a5;
+      margin-bottom: 0.7rem;
+    }
+    .char-bio {
+      font-size: 1rem;
+      color: #fbfcff;
+      background: #141b41cc;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.2rem;
+      box-shadow: 0 2px 8px #0002;
+    }
+    .char-footer {
+      font-size: 0.95rem;
+      color: #fbfcff;
+      margin-top: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+    .char-stats {
+      display: flex;
+      justify-content: space-around;
+      margin: 1.2rem 0 0.7rem 0;
+    }
+    .char-stat {
+      background: #2d6843;
+      color: #fbfcff;
+      border-radius: 8px;
+      padding: 0.5rem 1.1rem;
+      font-size: 1rem;
+      font-weight: 600;
+      box-shadow: 0 2px 8px #0002;
+    }
+    /* About Paragraph */
+    .about-contact-col {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      min-width: 340px;
+      max-width: 700px;
+      flex: 1 1 350px;
+    }
+    .about-me-section {
+      max-width: 100%;
+      min-height: 220px;
+      margin: 0 0 0.7rem 0;
+      background: #141b41cc;
+      border-radius: 14px;
+      padding: 2.2rem 2.5rem 1.2rem 2.5rem;
+      color: #fbfcff;
+      font-family: 'MyGenFonts', Arial, sans-serif;
+      font-size: 1.25rem;
+      box-shadow: 0 2px 12px #0002;
+      text-align: left;
+    }
+    .contact-section {
+      margin-top: 0.2rem;
+    }
+    .pumplet-container {
+      gap: 1.2rem !important;
+      margin: 0.5rem 0 0 0 !important;
+    }
+    /* Contact Card Styles */
+    .pumplet-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem !important;
+      justify-content: center;
+      margin: 1.2rem 0 !important;
+    }
+    .pumplet {
+      background: #2d6843;
+      color: #D0CCD0;
+      border-radius: 16px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      padding: 2rem 1.5rem 1.5rem 1.5rem;
+      min-width: 220px;
+      max-width: 260px;
+      text-align: center;
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      cursor: pointer;
+    }
+    .pumplet:hover {
+      transform: translateY(-6px) scale(1.03);
+      box-shadow: 0 8px 24px rgba(44, 104, 67, 0.25);
+      background: #192c1e;
+    }
+    .pumplet-logo {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .pumplet-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: #a3d9a5;
+    }
+    @media (max-width: 700px) {
+      .pumplet-container { flex-direction: column; align-items: center; }
+      .pumplet { width: 90%; max-width: 350px; }
+    }
+    @media (max-width: 900px) {
+      .about-me-section { padding: 2rem 1rem; font-size: 1.1rem; }
+      .pumplet-container { gap: 1.2rem !important; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header: Navigation and Title -->
+  <header class="custom-header">
+    <div class="header-content">
+      <h1 class="main-title">Aidoneus</h1>
+      <nav class="main-nav">
+        <a href="aidoneus.html">Get in Touch</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="main-flex-container" style="display: flex; flex-wrap: wrap; justify-content: flex-start; align-items: flex-start; gap: 2.5rem; margin-top: 2.5rem; max-width: 1200px; margin-left: auto; margin-right: auto;">
+      <!-- Character Card Section -->
+      <div style="flex: 0 0 370px; min-width: 320px;">
+        <div class="character-card" style="padding-top: 1.2rem; margin: 0;">
+          <!-- Card Header: Name and Level -->
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem;">
+            <div style="text-align:left; font-size:1.8rem; font-weight:100; letter-spacing:1px; color:#fbfcff; font-family: 'MyCardFonts', serif;">Aidoneus</div>
+            <div style="font-size:2.3rem; color:#4e6a9e; font-weight:100; display:flex; align-items:center; gap:0.3em; font-family: 'MyCardFonts', serif;">
+              <!-- Heart SVG Icon -->
+              <svg width="30" height="30" viewBox="0 0 24 24" fill="#4e6a9e" style="vertical-align:middle;"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 0.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+              130
+            </div>
+          </div>
+          <!-- Card Avatar Images (background switcher) -->
+          <div style="background: none; border-radius:12px; padding:0.7rem 0; margin-bottom:0.7rem; display:flex; flex-direction:column; align-items:center; min-height:150px; position:relative; overflow:hidden;">
+            <img id="bgAvatar" src="images/avatarfull.png" alt="Avatar Background" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; border-radius:5px; z-index:0; transition:opacity 0.7s;" />
+            <img id="bgAvatar2" src="images/background.png" alt="Avatar Background 2" style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; border-radius:5px; z-index:0; opacity:0; transition:opacity 0.7s;" />
+          </div>
+          <!-- Card Details: Titles, stats, and flavor text -->
+          <div style="text-align:left; margin-bottom:0.7rem;">
+            <div style="font-family: 'MyCardFonts', serif;font-size:1.8rem; font-weight:100; color:#2d6843;"> The Nocturnal Arcanist </div>
+            <div style="font-family: 'MyGenFonts', serif;font-size:0.98rem; color:#fbfcff; margin-bottom:0.3rem;">A student who desperately needs to study.</div>
+            <div style="font-family: 'MyCardFonts', serif;font-size:1.2rem; font-weight:100; color:#4e6a9e; display:flex; align-items:center; justify-content:space-between;">
+              <span>🕮✦ Silmeleth</span>
+              <span style="font-size:0.95rem; color:#fbfcff; margin-left:1.2rem;">MOT +13</span>
+            </div>
+            <div style="font-family: 'MyGenFonts', serif;font-size:0.98rem; color:#fbfcff; margin-bottom:0.3rem;">Star-radiance stirs the soul. Best cast under night skies.</div>
+            <div style="font-family: 'MyCardFonts', serif;font-size:1.2rem; font-weight:100; color:#4e6a9e; display:flex; align-items:center; justify-content:space-between;">
+              <span>🕮✦ Lómequilda</span>
+              <span style="font-size:0.95rem; color:#fbfcff; margin-left:1.2rem;">FOC +5</span>
+            </div>
+            <div style="font-family: 'MyGenFonts', serif;font-size:0.98rem; color:#fbfcff; margin-bottom:0.3rem;">A soft cloak of night—perfect for peace, thought, and retreat.</div>
+          </div>
+          <!-- Card Mode Description -->
+          <div style="background:#232526; color:#2d6843; border-radius:8px; padding:0.3rem 0.3rem; font-size:1.2rem; font-weight:100; margin-bottom:1.0rem; font-family: 'MyCardFonts', serif;">
+            Dreamer's Refuge MODE
+            <div style="font-size:0.8rem; font-weight:400; color:#fbfcff; font-family: 'MyGenFonts', sans-serif;">The scholar's duties fade away. Dragons fall before your fingertips—whether wielding controller or turning pages. Cloaked in blankets, you reign supreme in your kingdom of stories.</div>
+          </div>
+          <!-- Card Status Tags -->
+          <div class="char-stats" style="margin:0.7rem 0 0.7rem 0; font-family: 'MyCardFonts', serif;">
+            <div class="char-stat" style="background:#2d6843; color:#fbfcff; border:1.5px solid #232526;font-size:0.9rem; font-weight:100">Out of Luck</div>
+            <div class="char-stat" style="background:#2d6843; color:#fbfcff; border:1.5px solid #232526;font-size:0.9rem; font-weight:100">Tired</div>
+            <div class="char-stat" style="background:#2d6843; color:#fbfcff; border:1.5px solid #232526;font-size:0.9rem; font-weight:100">Caffeinated</div>
+          </div>
+          <div class="char-footer" style="color:#fbfcff; font-size:0.95rem; margin-top:1.2rem; font-family: 'MyGenFonts', sans-serif;">Real Life RPG.</div>
+        </div>
+      </div>
+      <!-- About & Contact Section -->
+      <div class="about-contact-col" style="flex: 1 1 350px; min-width: 320px; max-width: 100%; background: #141b41cc; border-radius: 14px; box-shadow: 0 2px 12px #0002; padding: 2.2rem 2.5rem 1.2rem 2.5rem; margin-bottom: 1.2rem;">
+        <section class="about-me-section" style="background: none; box-shadow: none; padding: 0; margin-bottom: 1.5rem;">
+          <h2>About Me</h2>
+          <p>Hi, I'm Naz Sipahi — a tech enthusiast passionate about data science, web development, and creative problem-solving. I enjoy working on Python and full-stack projects, and I'm always exploring new tools and ideas.
+
+In my free time, I love reading high fantasy, analyzing games, and learning about people through data.</p>
+        </section>
+        <section class="contact-section">
+          <h2>Contact Details</h2>
+          <div class="pumplet-container">
+            <!-- Email -->
+            <a class="pumplet" href="mailto:aidoneus.lethe@gmail.com" target="_blank" rel="noopener" style="min-width:120px; max-width:150px; padding:1rem 0.5rem; font-size:0.95rem;">
+              <span class="pumplet-logo" style="width:32px; height:32px; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center;">
+                <img src="images/maillogo.png" alt="Email" style="width:32px; height:32px; object-fit:contain;" />
+              </span>
+              <div class="pumplet-title" style="font-size:0.98rem;">Email</div>
+            </a>
+            <!-- LinkedIn -->
+            <a class="pumplet" href="https://www.linkedin.com/in/ipeknazsipahi" target="_blank" rel="noopener" style="min-width:120px; max-width:150px; padding:1rem 0.5rem; font-size:0.95rem;">
+              <span class="pumplet-logo" style="width:32px; height:32px; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center;">
+                <img src="images/linkedinlogo.png" alt="LinkedIn" style="width:32px; height:32px; object-fit:contain;" />
+              </span>
+              <div class="pumplet-title" style="font-size:0.98rem;">LinkedIn</div>
+            </a>
+            <!-- GitHub -->
+            <a class="pumplet" href="https://github.com/4idoneus" target="_blank" rel="noopener" style="min-width:120px; max-width:150px; padding:1rem 0.5rem; font-size:0.95rem;">
+              <span class="pumplet-logo" style="width:32px; height:32px; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center;">
+                <img src="images/githublogo.png" alt="GitHub" style="width:32px; height:32px; object-fit:contain;" />
+              </span>
+              <div class="pumplet-title" style="font-size:0.98rem;">GitHub</div>
+            </a>
+            <!-- Kaggle -->
+            <a class="pumplet" href="https://www.kaggle.com/peknazsipahiaidoneus" target="_blank" rel="noopener" style="min-width:120px; max-width:150px; padding:1rem 0.5rem; font-size:0.95rem;">
+              <span class="pumplet-logo" style="width:32px; height:32px; margin-bottom:0.5rem; display:flex; align-items:center; justify-content:center;">
+                <img src="images/kagglelogo.png" alt="Kaggle" style="width:32px; height:32px; object-fit:contain;" />
+              </span>
+              <div class="pumplet-title" style="font-size:0.98rem;">Kaggle</div>
+            </a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+  <!-- Footer: Copyright -->
+  <footer class="custom-footer" style="background-color: #192c1e; color: #fbfcff;">
+    2025 Aidoneus. All rights reserved.
+  </footer>
+  <!-- Avatar background switcher script -->
+  <script>
+    const bgAvatar = document.getElementById('bgAvatar');
+    const bgAvatar2 = document.getElementById('bgAvatar2');
+    let showFirst = true;
+    setInterval(() => {
+      showFirst = !showFirst;
+      bgAvatar.style.opacity = showFirst ? 1 : 0;
+      bgAvatar2.style.opacity = showFirst ? 0 : 1;
+    }, 13000);
+  </script>
+</body>
+</html>

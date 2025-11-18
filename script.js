@@ -1,4 +1,8 @@
+console.log("%cHello, Traveler! ⚔️", "color: #a3d9a5; font-family: monospace; font-size: 24px; font-weight: bold;");
+console.log("%cLooking for the source code? You are in the right place.", "color: #d0ccd0; font-size: 14px;");
+
 window.onload = function () {
+  // --- POPUP LOGIC ---
   const popup = document.getElementById("amateurPopup");
   const popupMessage = document.getElementById("popupMessage");
   const yesBtn = document.getElementById("popupYes");
@@ -6,61 +10,51 @@ window.onload = function () {
   const closeBtn = document.getElementById("popupClose");
   const popupButtons = document.getElementById("popupButtons");
 
-  // IT jokes
   const jokes = [
     "Error 404: 'No' not found.",
     "Access Denied. Please contact your system administrator.",
     "Nice try, but 'No' is not a valid input.",
     "Segmentation fault (core dumped).",
-    "Unexpected token 'No'.",
     "The operation completed successfully… but did nothing.",
     "Are you sure you’re sure?",
-    "Permission denied. Elevate to root to say No.",
-    "Press any key to continue… except 'No'.",
-    "Congratulations, you’ve clicked the wrong button."
+    "Permission denied. Elevate to root to say No."
   ];
 
-  if (popup && yesBtn && noBtn && closeBtn && popupMessage && popupButtons) {
+  if (popup && yesBtn && noBtn && closeBtn) {
     popup.classList.remove("hidden");
-
     yesBtn.addEventListener("click", () => popup.classList.add("hidden"));
-
     noBtn.addEventListener("click", () => {
       const joke = jokes[Math.floor(Math.random() * jokes.length)];
       popupMessage.textContent = joke;
-
-      // Hide Yes/No, show Close
       popupButtons.classList.add("hidden");
       closeBtn.classList.remove("hidden");
     });
-
     closeBtn.addEventListener("click", () => popup.classList.add("hidden"));
+  }
 
-  // -----------------
-  // Laundry list logic
-  // -----------------
+  // --- LAUNDRY LIST (TECHNICAL) ---
   const laundryLists = [
     {
-      title: "Notes",
+      title: "Current Objectives",
       items: [
-        "It is a not a complete guide. I am still learning and will update it as I go.",
-        "Sky is the limit when it comes to failures.",
-        "Do not delete the database on your first day of work."
+        "Build Go Game AI (Phase 1: Model)",
+        "Complete 100 Days of Python",
+        "Refactor Portfolio to Django"
       ]
     },
     {
-      title: "Useful Links",
+      title: "Skill Tree (Learning)",
       items: [
-        '<a href="https://cs50.harvard.edu/" target="_blank">HarvardCS50x</a>',
-        '<a href="https://www.youtube.com/" target="_blank">YouTube</a>'
+        "Graph Neural Networks (GNN)",
+        "Explainable AI (XAI)",
+        "Japanese (N3/N2 Target)"
       ]
     },
     {
-      title: "Laundry List",
+      title: "Useful Loot",
       items: [
-        "Work on organizing the guide.",
-        "Add a blog section",
-        "Change the website structure to python based (Flask or Django).",
+        '<a href="https://cs50.harvard.edu/" target="_blank">HarvardCS50x (Done)</a>',
+        '<a href="https://github.com/4idoneus" target="_blank">My GitHub Repo</a>'
       ]
     }
   ];
@@ -77,7 +71,7 @@ window.onload = function () {
     laundryTitle.textContent = laundryLists[idx].title;
   }
 
-  if (leftBtn && rightBtn && laundryListBox && laundryTitle) {
+  if (laundryListBox) {
     renderLaundryList(laundryIndex);
     leftBtn.addEventListener('click', () => {
       laundryIndex = (laundryIndex - 1 + laundryLists.length) % laundryLists.length;
@@ -88,61 +82,31 @@ window.onload = function () {
       renderLaundryList(laundryIndex);
     });
   }
-}
 
-  // Rick Roll functionality
-  const wantMoreBtn = document.getElementById('wantMoreBtn');
-  const rickRoll = document.getElementById('rickRoll');
-  const rickAudio = document.getElementById('rickAudio');
-  const popup2 = document.getElementById('popup');
-  const closePopup = document.getElementById('closePopup');
-  const noteContainer = document.getElementById('noteContainer');
+  // --- EASTER EGG: KONAMI CODE ---
+  // Up, Up, Down, Down, Left, Right, Left, Right, b, a
+  const konamiCode = ["ArrowUp", "ArrowUp", "ArrowDown", "ArrowDown", "ArrowLeft", "ArrowRight", "ArrowLeft", "ArrowRight", "b", "a"];
+  let konamiIndex = 0;
 
-  function launchMusicNotes() {
-    if (!noteContainer) return;
-    const notes = ['🎵', '🎶', '🎼', '🎷', '🎺', '🎸'];
-    for (let i = 0; i < 15; i++) {
-      const note = document.createElement("div");
-      note.className = "music-note";
-      note.textContent = notes[Math.floor(Math.random() * notes.length)];
-      const x = `${Math.random() * 200 - 100}px`;
-      const y = `${Math.random() * -250 - 100}px`;
-      note.style.setProperty('--x', x);
-      note.style.setProperty('--y', y);
-      note.style.position = 'absolute';
-      note.style.left = `${250 + Math.random() * 100 - 50}px`;
-      note.style.top = `250px`;
-      note.style.fontSize = '2rem';
-      note.style.color = '#2D6843';
-      note.style.transition = 'transform 2s ease-out, opacity 2s ease-out';
-      noteContainer.appendChild(note);
-      setTimeout(() => {
-        note.style.transform = `translate(${x}, ${y})`;
-        note.style.opacity = '0';
-      }, 50);
-      setTimeout(() => {
-        note.remove();
-      }, 3000);
+  document.addEventListener("keydown", (e) => {
+    if (e.key === konamiCode[konamiIndex]) {
+      konamiIndex++;
+      if (konamiIndex === konamiCode.length) {
+        activateLegendaryMode();
+        konamiIndex = 0;
+      }
+    } else {
+      konamiIndex = 0;
     }
-  }
+  });
 
-  if (wantMoreBtn && rickRoll && rickAudio) {
-    wantMoreBtn.addEventListener('click', () => {
-      rickRoll.style.display = 'flex';
-      document.body.style.backgroundColor = '#000';
-      rickAudio.play();
-      launchMusicNotes();
-      rickAudio.onended = () => {
-        if (popup2) popup2.classList.remove('hidden');
-        rickRoll.style.display = 'none';
-        document.body.style.backgroundColor = '';
-      };
-    });
+  function activateLegendaryMode() {
+    document.body.classList.toggle("legendary-mode");
+    const msg = document.getElementById("legendary-message");
+    if (msg) {
+        msg.style.display = "block";
+        setTimeout(() => { msg.style.display = "none"; }, 4000);
+    }
+    console.log("%c LEVEL UP! Legendary Mode Activated.", "color: gold; font-size: 20px; background: #333; padding: 10px;");
   }
-  if (closePopup && wantMoreBtn) {
-    closePopup.addEventListener('click', () => {
-      if (popup2) popup2.classList.add('hidden');
-      wantMoreBtn.style.display = 'inline-block';
-    });
-  }
-}
+};

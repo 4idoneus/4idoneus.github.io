@@ -3,17 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Welcome - Network Admin Guide</title>
+  <title>Aidoneus | Save Point</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <header class="custom-header">
     <div class="header-content">
       <h1 class="main-title">Ai’s Admin Guide to Aidoneus</h1>
-      <div class="subtitle">My personal website to my projects and myself</div>
+      <div class="subtitle">Data Science | Full Stack | RPG Enthusiast</div>
       <nav class="main-nav">
-        <a href="aidoneus.html">About Me</a>
-        <a href="aidoneus.html">Get in Touch</a>
+        <a href="projects.html">Quest Log</a>
+        <a href="blog.html">Grimoire</a>
+        <a href="aidoneus.html">About & Contact</a>
       </nav>
     </div>
   </header>
@@ -24,51 +25,49 @@
         <img src="images/avatar.png" alt="Avatar" class="avatar-img">
         <div class="avatar-name">Aidoneus</div>
       </div>
+
+      <div class="status-window">
+        <h3>🧩 Current Quest Status</h3>
+        <ul class="quest-list">
+          <li><span class="quest-icon">⚔️</span> <strong>Main Quest:</strong><br>XAI Go Move Recommender <span class="quest-meta">(Graduation Project)</span></li>
+          <li><span class="quest-icon">🏃‍♂️</span> <strong>Daily Grind:</strong><br>100 Days of Python <span class="quest-meta">(Day 45/100)</span></li>
+          <li><span class="quest-icon">🌏</span> <strong>Target Server:</strong><br>Japan Research Lab <span class="quest-meta">(ETA: 2026)</span></li>
+        </ul>
+      </div>
+
       <div class="laundry-row">
-        <button class="circle-btn" id="laundryLeftBtn"><span class="arrow">&#8592;</span></button>
+        <button class="circle-btn" id="laundryLeftBtn">&#8592;</button>
         <div class="laundry-list-box">
           <div class="laundry-title" id="laundryTitle">Laundry List</div>
-          <ul id="laundryList">
-            <li>Organize  the  guide.</li>
-            <li>Add a blog section</li>
-          </ul>
+          <ul id="laundryList"></ul>
         </div>
-        <button class="circle-btn" id="laundryRightBtn"><span class="arrow">&#8594;</span></button>
+        <button class="circle-btn" id="laundryRightBtn">&#8594;</button>
       </div>
     </section>
+
     <section class="right-col">
       <div class="welcome-box">
-        <div class="welcome-title">Welcome</div>
+        <div class="welcome-title">Welcome to the Save Point</div>
         <div class="welcome-text">
-         Hello there! I didn’t expect you to stumble upon this page, but here we are.  
-          This is my guide on how to be an average Joe in IT — and at the same time, it’s also my personal website, diary, and blog-like to-do list. <br><br>
-          This guide concisely covers the essentials of IT from a beginner’s perspective — things I’ve learned, mistakes I’ve made, and practical insights that might help you along the way. Whether you’re just starting out or simply curious, you’ll find simple explanations and examples that make IT a little less intimidating. <br><br>
-  
-          I’ll be sharing everything I know about IT in this guide, but I’m still learning, so there might be mistakes or areas where my knowledge is incomplete. If you spot anything that seems off, or if you have questions, suggestions, or just want to share your thoughts, feel free to reach out to me via the contact page. <br><br>
-  
-  Think of this space as both a learning resource and a journey log — where I collect experiences, refine my skills, and (hopefully) make technology a bit clearer for others too. 
+          <p>Hello! You’ve stumbled into the digital workspace of <strong>Aidoneus</strong>. This is my dedicated Quest Log, Grimoire, and Laboratory.</p>
+          <p>I am a Computer Engineering student specializing in <strong>Data Science and AI</strong>, currently grinding toward my degree (ETA: July 2026). My mission is to demystify complex systems—whether that's explaining AI moves in the game of Go or documenting my 100-day Python sprint.</p>
+          <p>Think of this space as an open-source journey. I document the bugs I squash and the features I deploy. Look around, check my stats, but please—mind the experimental code.</p>
         </div>
-      </div>
       </div>
     </section>
   </main>
 
-<!-- Popup -->
-<div id="amateurPopup" class="custom-popup hidden">
-  <div class="popup-content">
-    <p id="popupMessage">Are you sure?</p>
-    <div id="popupButtons">
-      <button id="popupYes" class="btn">Yes</button>
-      <button id="popupNo" class="btn">No</button>
+  <div id="amateurPopup" class="custom-popup hidden">
+    <div class="popup-content">
+      <p id="popupMessage">Are you sure?</p>
+      <div id="popupButtons"><button id="popupYes" class="btn">Yes</button><button id="popupNo" class="btn">No</button></div>
+      <button id="popupClose" class="btn hidden">Close</button>
     </div>
-    <button id="popupClose" class="btn hidden">Close</button>
   </div>
-</div>
 
-  <footer class="custom-footer">
-    2025 Aidoneus. All rights reserved.
-  </footer>
+  <div id="legendary-message">🌟 LEGENDARY MODE UNLOCKED 🌟</div>
 
-<script src="script.js"></script>
+  <footer class="custom-footer">2025 Aidoneus. All rights reserved.</footer>
+  <script src="script.js"></script>
 </body>
 </html>
